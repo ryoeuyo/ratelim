@@ -10,9 +10,6 @@ log:
 storage:
   driver: redis
   redis:
-    addr: "localhost:6379"
-    db: 0
-    password: ""
     key_prefix: "ratelim"
 
 limits:
