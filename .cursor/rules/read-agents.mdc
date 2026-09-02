@@ -1,0 +1,10 @@
+---
+description: Read AGENTS.md at the start of every session
+alwaysApply: true
+---
+
+# Read AGENTS.md first
+
+At the start of every agent session in this repository, before any other work, read `AGENTS.md` at the repo root with the Read tool and follow it.
+
+Stay in this repository unless the user explicitly expands the scope. Do not look for `api/avia/AGENTS.md`.

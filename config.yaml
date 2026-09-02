@@ -1,0 +1,47 @@
+server:
+  addr: "localhost:8080"
+  read_timeout: 5s
+  write_timeout: 15s
+  shutdown_timeout: 10s
+
+log:
+  level: info
+
+storage:
+  driver: redis
+  redis:
+    addr: "localhost:6379"
+    db: 0
+    password: ""
+    key_prefix: "ratelim"
+
+limits:
+  default:
+    rate: 100
+    window: 1m
+    key: [ip, path]
+  strict:
+    rate: 10
+    window: 1s
+    key: [ip, path]
+
+upstreams:
+  users:
+    url: "http://service.v1:8080"
+    timeout: 5s
+  orders:
+    url: "http://service.v2:8080"
+    timeout: 5s
+
+routes:
+  - match:
+      path_prefix: /api/users
+    upstream: users
+    rewrite:
+      strip_prefix: /api
+    limit: default
+
+  - match:
+      path_prefix: /api/orders
+    upstream: orders
+    limit: strict

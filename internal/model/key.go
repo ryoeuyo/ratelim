@@ -2,8 +2,8 @@ package model
 
 import "fmt"
 
-type Key string
+type key string
 
-func NewKey(ip, uri string) Key {
-	return Key(fmt.Sprintf("%s:%s", ip, uri))
+func NewKey(ip, uri string) key {
+	return key(fmt.Sprintf("%s:%s", ip, uri))
 }
