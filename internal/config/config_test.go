@@ -6,7 +6,9 @@ import (
 )
 
 func TestLoad(t *testing.T) {
-	t.Parallel()
+	t.Setenv("REDIS_ADDR", "localhost:6379")
+	t.Setenv("REDIS_PASSWORD", "")
+	t.Setenv("REDIS_DB", "0")
 
 	cfg, err := Load("../../config.yaml")
 	if err != nil {

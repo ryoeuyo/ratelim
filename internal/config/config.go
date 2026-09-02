@@ -1,10 +1,13 @@
 package config
 
 import (
+	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -33,9 +36,9 @@ type Storage struct {
 }
 
 type Redis struct {
-	Addr      string `yaml:"addr" env:"REDIS_ADDR" env-default:"localhost:6379"`
-	DB        int    `yaml:"db" env:"REDIS_DB" env-default:"0"`
-	Password  string `yaml:"password" env:"REDIS_PASSWORD"`
+	Addr      string `env:"REDIS_ADDR" env-default:"localhost:6379"`
+	DB        int    `env:"REDIS_DB" env-default:"0"`
+	Password  string `env:"REDIS_PASSWORD"`
 	KeyPrefix string `yaml:"key_prefix" env:"REDIS_KEY_PREFIX" env-default:"ratelim"`
 }
 
@@ -66,6 +69,10 @@ type Rewrite struct {
 }
 
 func Load(path string) (*Config, error) {
+	if err := godotenv.Load(); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return nil, fmt.Errorf("load .env: %w", err)
+	}
+
 	var cfg Config
 	if err := cleanenv.ReadConfig(path, &cfg); err != nil {
 		return nil, fmt.Errorf("read config %q: %w", path, err)
